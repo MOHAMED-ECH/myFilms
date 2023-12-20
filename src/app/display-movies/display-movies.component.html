@@ -1,0 +1,33 @@
+<nav class="navbar navbar-dark bg-light ">
+  <a class="navbar-brand text-black ms-3">MOVIES</a>
+  <form class="d-flex me-3" (ngSubmit)=searchMovies(filter.value)>
+    <input class="form-control me-2" style="border: 1.3px solid lightslategray;" type="search" placeholder="Search movie" aria-label="Search" #filter>
+    <button class="btn btn-secondary" type="submit">Search</button>
+  </form>
+</nav>
+
+<div class="container mt-5 mx-5 ">
+
+  <div class="row ms-5">
+    <div class="col-md-4" *ngFor="let movie of moviesSrch">
+      <div class="card mb-4 mx-auto shadow-sm" style="width: 18rem;">
+        <img src="https://image.tmdb.org/t/p/w300{{movie.poster_path}}" alt="Image de {{movie.title}}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{movie.title}}</h5>
+          <p class="card-text">Date de sortie : {{movie.release_date}}</p>
+          <p class="card-text">Moyenne des votes :{{movie.vote_average}} </p>
+          <a [routerLink]="['/details', movie.id ]" class="btn btn-primary">Details</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+

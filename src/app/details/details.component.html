@@ -1,0 +1,36 @@
+
+<div class=" background container-fluid my-5 bg-dark ps-5"
+     [ngStyle]="{'background-image': 'url(https://image.tmdb.org/t/p/w500' + movieDetails?.backdrop_path + ')',
+        'position': 'relative',
+  'background-size': 'cover',
+  'background-repeat': 'no-repeat',
+  'background-position':'center',
+    'background':' rgba(0, 0, 0, 0.5)'}">
+
+  <div class=" mb-3 mx-5">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="https://image.tmdb.org/t/p/w300{{movieDetails.poster_path}}"
+             alt="Image de {{movieDetails.title}}"
+             class="img-fluid rounded-1 my-3">
+      </div>
+      <div class="col-md-8 m-sm-auto">
+        <div class="card-body text-light">
+          <h1 class="card-title">{{movieDetails.title}}</h1>
+          <p class=" container card-text ms-auto">{{movieDetails.overview}}</p>
+          <p class="card-text">Adult:{{movieDetails.adult}} </p>
+          <p class="card-text">Average vote: {{movieDetails.vote_average}}</p>
+          <p class="card-text">Popularity: {{movieDetails.popularity}}</p>
+          <p class="card-text">RunTimes: {{movieDetails.runtime}}</p>
+          <div class="flex-row" >
+            <span class="badge rounded-pill text-bg-warning" *ngFor="let genre of movieDetails.genres">{{genre.name}}</span>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
