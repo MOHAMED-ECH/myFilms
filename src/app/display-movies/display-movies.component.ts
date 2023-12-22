@@ -27,6 +27,7 @@ export class DisplayMoviesComponent implements OnInit {
 
   movies!: Movie[];
   moviesSrch!: Movie[];
+  moviesFav!: Movie[];
 
   constructor(private tmdbService: TmdbService) {
   }
@@ -70,7 +71,27 @@ export class DisplayMoviesComponent implements OnInit {
   }
 
 
-
-
   protected readonly filter = filter;
+
+  getFavorites() {
+
+    this.moviesSrch = this.movies.filter(movie => movie.favorite);
+
+  }
+
+  toggleFavorite(movie: Movie) {
+    movie.favorite = !movie.favorite;
+
+    if (movie.favorite) {
+      this.moviesFav.push(movie);
+    } else {
+      const index = this.moviesFav.findIndex(m => m.id === movie.id);
+      if (index > -1) {
+        this.moviesFav.splice(index, 1);
+      }
+    }
+  }
+
+
+
 }

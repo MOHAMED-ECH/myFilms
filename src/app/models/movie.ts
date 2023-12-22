@@ -1,4 +1,5 @@
 export interface Movie {
+  favorite: boolean;
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
