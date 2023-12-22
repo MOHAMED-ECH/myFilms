@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {DatePipe, NgForOf} from "@angular/common";
 import {filter, Observable} from "rxjs";
 import {TmdbService} from "../services/tmdb.service";
@@ -7,6 +7,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormControl, FormGroup, FormsModule} from "@angular/forms";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {Validators} from "@angular/forms";
+import {DetailsComponent} from "../details/details.component";
 
 
 @Component({
@@ -23,6 +24,8 @@ import {Validators} from "@angular/forms";
   templateUrl: './display-movies.component.html',
   styleUrl: './display-movies.component.css'
 })
+
+@Injectable()
 export class DisplayMoviesComponent implements OnInit {
 
   movies!: Movie[];

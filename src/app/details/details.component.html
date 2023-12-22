@@ -14,11 +14,11 @@
              alt="Image de {{movieDetails.title}}"
              class="img-fluid rounded-1 my-3">
       </div>
-      <div class="col-md-8 m-sm-auto">
-        <div class="card-body text-light">
+      <div class="col-md-8 m-sm-auto ">
+        <div class="container bg-black bg-opacity-50 card-body text-light p-5">
           <h1 class="card-title">{{movieDetails.title}}</h1>
           <p class=" container card-text ms-auto">{{movieDetails.overview}}</p>
-          <p class="card-text">Adult:{{movieDetails.adult}} </p>
+          <p class="card-text">Adult:{{movieDetails.adult?" YES":" NO"}} </p>
           <p class="card-text">Average vote: {{movieDetails.vote_average}}</p>
           <p class="card-text">Popularity: {{movieDetails.popularity}}</p>
           <p class="card-text">RunTimes: {{movieDetails.runtime}}</p>

@@ -1,10 +1,14 @@
 <nav class="navbar navbar-dark bg-light ">
   <a class="navbar-brand text-black ms-3" (click)="getMovies()">MOVIES</a>
-  <form class="d-flex me-3" (ngSubmit)=searchMovies(filter.value)>
-    <input class="form-control me-2" style="border: 1.3px solid lightslategray;" type="search" placeholder="Search movie" aria-label="Search" #filter>
-    <button class="btn btn-secondary" type="submit">Search</button>
+  <form class="d-flex me-2" (ngSubmit)=searchMovies(filter.value)>
+    <input class="form-control me-2" style="border: 1.3px solid lightslategray;"
+           type="search" placeholder="Search movie"
+           aria-label="Search" #filter>
+    <button class="btn btn-secondary me-2" type="submit">Search</button>
   </form>
+
   <button class="btn btn-secondary me-3" (click)="getFavorites()">FAVORITES</button>
+
 </nav>
 
 <div class="container mt-5 mx-5 ">
@@ -19,7 +23,7 @@
           <p class="card-text">Moyenne des votes :{{movie.vote_average}} </p>
           <div class="d-flex-row ">
             <a [routerLink]="['/details', movie.id ]" class="btn btn-primary ms-3">Details</a>
-            <i [class]="movie.favorite ? 'bi bi-heart-fill ms-3' : 'bi bi-person-heart ms-3'" (click)="toggleFavorite(movie)"></i>
+            <i [class]="movie.favorite ? 'bi bi-heart-fill ms-3' : 'bi bi-heart ms-3'" (click)="toggleFavorite(movie)"></i>
           </div>
 
         </div>

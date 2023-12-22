@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {Movie} from "../models/movie";
 import {TmdbService} from "../services/tmdb.service";
 import {ActivatedRoute} from "@angular/router";
 import {MovieDetails} from "../models/MovieDetails";
 import {NgForOf, NgStyle} from "@angular/common";
+import {DisplayMoviesComponent} from "../display-movies/display-movies.component";
 
 
 
@@ -18,6 +19,8 @@ import {NgForOf, NgStyle} from "@angular/common";
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
+
+@Injectable()
 export class DetailsComponent implements OnInit{
   movieDetails!: MovieDetails; // Type approprié pour les détails du film
 
@@ -25,7 +28,8 @@ export class DetailsComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private movieService: TmdbService
+    private movieService: TmdbService,
+    private displayMoviesComponent: DisplayMoviesComponent
   ) {}
 
   ngOnInit() {
@@ -44,6 +48,29 @@ export class DetailsComponent implements OnInit{
   }
 
 
+ /* toggleFavoriteDetails(movieDetails: MovieDetails) {
+
+    movieDetails.favorite = !movieDetails.favorite;
+
+    let movieToUpdate = this.displayMoviesComponent.movies.find(movie => movie.id === movieDetails.id);
+    if (movieToUpdate) {
+      movieToUpdate.favorite = movieDetails.favorite;
 
 
+
+      if (movieToUpdate.favorite) {
+        this.displayMoviesComponent.moviesFav.push(movieToUpdate);
+      } else {
+        const index = this.displayMoviesComponent.moviesFav.findIndex(m => m.id === movieToUpdate?.id);
+        if (index > -1) {
+          this.displayMoviesComponent.moviesFav.splice(index, 1);
+        }
+      }
+
+    }
+
+
+
+
+  }*/
 }

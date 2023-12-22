@@ -1,4 +1,5 @@
 export interface MovieDetails {
+  favorite: boolean;
   adult: boolean;
   backdrop_path: string;
   belongs_to_collection: any;
