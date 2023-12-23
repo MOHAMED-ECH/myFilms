@@ -9,7 +9,7 @@ import {Observable} from "rxjs";
 export class TmdbService {
 
   baseurl = "https://api.themoviedb.org/3/movie/popular";
-  apikey = "4722616a8836f0b929a9cb3a04f6a6a4";
+  apikey = "78ce52945c3a64fd0c84e4b97a4090ca";
 
   constructor(private httpClient: HttpClient) { }
 
