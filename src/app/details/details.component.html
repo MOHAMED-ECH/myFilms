@@ -36,21 +36,57 @@
   </div>
 
 </div>
-<div class="container my-4 border-black-2">
+<div class="container my-4 pb-2">
   <h3>Laissez un commentaire</h3>
   <form (ngSubmit)="submitComment()">
     <div class="mb-3">
       <input type="text" class="form-control" [(ngModel)]="newComment.auteur" name="auteur" placeholder="Votre nom..." />
       <textarea class="form-control" rows="3" [(ngModel)]="newComment.contenu" name="contenu" placeholder="Votre commentaire..."></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Poster</button>
+    <button type="submit" class="btn btn-dark">Poster</button>
   </form>
 
-  <div class="mt-4 m-3">
+  <!--<div class="mt-4 m-3">
     <h5>Commentaires:</h5>
     <div *ngFor="let comment of comments" class="mt-2">
       <p>Auteur: {{ comment?.auteur }}</p>
       <p>Commentaire: {{ comment?.contenu }}</p>
     </div>
+  </div>-->
+
+
+
+
+
+<!--  commentaire 2-->
+
+  <div class="container  border-top mt-3" style="border-top-width: 8px; border-color: darkslategray">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="page-header">
+          <h1>Comments: <small class="pull-right">{{ comments.length }} comments</small></h1>
+        </div>
+        <div class="comments-list">
+          <div *ngFor="let comment of comments" class="d-flex align-items-center mb-3 border-bottom">
+            <div class="initials-circle mr-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 50%; background-color: black; color: white; font-size: 20px;">
+              {{ comment.auteur[0].toUpperCase() }}
+            </div>
+            <div class="ms-3">
+              <h4 class="media-heading user_name">{{ comment.auteur }}</h4>
+              <p>{{ comment.contenu }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+
+
+
+
+
+
+
 </div>
+

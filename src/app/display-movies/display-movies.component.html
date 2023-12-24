@@ -33,7 +33,7 @@
           <p class="card-text">Date de sortie : {{movie.release_date}}</p>
           <p class="card-text">Moyenne des votes :{{movie.vote_average}} </p>
           <div class="d-flex-row ">
-            <a [routerLink]="['/details', movie.id ]" class="btn btn-primary ms-3">Details</a>
+            <a [routerLink]="['/details', movie.id ]" class="btn btn-dark ms-3">Details</a>
             <i [class]="movie.favorite ? 'bi bi-heart-fill ms-3' : 'bi bi-heart ms-3'" (click)="toggleFavorite(movie)"></i>
           </div>
 
