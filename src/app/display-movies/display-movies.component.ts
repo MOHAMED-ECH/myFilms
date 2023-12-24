@@ -45,6 +45,8 @@ export class DisplayMoviesComponent implements OnInit {
 
 
 
+
+
   }
 
   onchange(searchTerm:String): void {
@@ -61,6 +63,17 @@ export class DisplayMoviesComponent implements OnInit {
       } else {
         console.log(result);
       }
+
+      this.favorisService.getAllFav().subscribe(aplaodedFilms => {
+        for (let mov of this.moviesSrch) {
+          for (let fav of aplaodedFilms) {
+            if (mov.id === fav.id) {
+              mov.favorite = true;
+            }
+          }
+        }
+        console.log("Updated favorites:", this.moviesSrch);
+      });
 
     });
   }
