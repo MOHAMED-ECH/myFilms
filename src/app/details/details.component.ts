@@ -5,6 +5,9 @@ import {ActivatedRoute} from "@angular/router";
 import {MovieDetails} from "../models/MovieDetails";
 import {NgForOf, NgStyle} from "@angular/common";
 import {DisplayMoviesComponent} from "../display-movies/display-movies.component";
+import {FormsModule} from "@angular/forms";
+import {CommentServiceService} from "../services/comment-service.service";
+import {Commentaire} from "../models/Commentaire";
 
 
 
@@ -14,7 +17,8 @@ import {DisplayMoviesComponent} from "../display-movies/display-movies.component
   standalone: true,
   imports: [
     NgForOf,
-    NgStyle
+    NgStyle,
+    FormsModule
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
@@ -29,16 +33,22 @@ export class DetailsComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private movieService: TmdbService,
+    private commentService: CommentServiceService
 
   ) {}
 
   ngOnInit() {
+
     this.route.params.subscribe(params => {
       this.movieService.getMoviesById(this.route.snapshot.params["id"]).subscribe(
         data => {
           this.movieDetails = data;
           this.genres = this.movieDetails.genres;
-          console.log("movie detailes :"+this.movieDetails);
+         this.getComments();
+        //  console.log("movie detailes :"+this.movieDetails);
+          // Initialiser ici newComment
+          this.newComment = { contenu: '', auteur: '', filmId: this.movieDetails.id };
+
         },
         error => {
           console.error('Erreur lors de la récupération des détails du film', error);
@@ -48,29 +58,54 @@ export class DetailsComponent implements OnInit{
   }
 
 
- /* toggleFavoriteDetails(movieDetails: MovieDetails) {
 
-    movieDetails.favorite = !movieDetails.favorite;
+// get comments :
 
-    let movieToUpdate = this.displayMoviesComponent.movies.find(movie => movie.id === movieDetails.id);
-    if (movieToUpdate) {
-      movieToUpdate.favorite = movieDetails.favorite;
-
-
-
-      if (movieToUpdate.favorite) {
-        this.displayMoviesComponent.moviesFav.push(movieToUpdate);
-      } else {
-        const index = this.displayMoviesComponent.moviesFav.findIndex(m => m.id === movieToUpdate?.id);
-        if (index > -1) {
-          this.displayMoviesComponent.moviesFav.splice(index, 1);
-        }
+  getComments(): void {
+    this.commentService.getComments(this.movieDetails.id).subscribe(
+      (comments) => {
+        this.comments = comments;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des commentaires', error);
       }
+    );
+  }
 
+
+
+
+
+ // addComment
+
+  newComment!: Commentaire;
+  comments: Commentaire[] = [];
+
+  submitComment(): void {
+    if (!this.newComment) {
+      console.log("movie details id :",this.movieDetails.id)
     }
+    if (this.newComment) {
+
+      this.comments.push({...this.newComment});
+      console.log("movie details id :",this.movieDetails.id)
+      console.log("new comment :",this.newComment);
+
+      this.commentService.addComment(this.movieDetails.id, this.newComment).subscribe(
+        (comment) => {
+          console.log('Commentaire ajouté', comment);
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du commentaire', error);
+        }
+      );
+      this.newComment.auteur ='' ; // Reset le champ de commentaire
+      this.newComment.contenu = '';
+    }
+  }
 
 
 
 
-  }*/
+
 }

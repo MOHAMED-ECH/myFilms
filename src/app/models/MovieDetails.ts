@@ -4,6 +4,7 @@ export interface MovieDetails {
   backdrop_path: string;
   belongs_to_collection: any;
   budget: number;
+
   genres: any[];
   homepage: string;
   id: number;

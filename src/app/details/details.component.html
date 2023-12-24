@@ -23,7 +23,9 @@
           <p class="card-text">Popularity: {{movieDetails.popularity}}</p>
           <p class="card-text">RunTimes: {{movieDetails.runtime}}</p>
           <div class="flex-row" >
+
             <span class="badge rounded-pill text-bg-warning" *ngFor="let genre of movieDetails.genres">{{genre.name}}</span>
+
 
           </div>
 
@@ -33,4 +35,22 @@
     </div>
   </div>
 
+</div>
+<div class="container my-4 border-black-2">
+  <h3>Laissez un commentaire</h3>
+  <form (ngSubmit)="submitComment()">
+    <div class="mb-3">
+      <input type="text" class="form-control" [(ngModel)]="newComment.auteur" name="auteur" placeholder="Votre nom..." />
+      <textarea class="form-control" rows="3" [(ngModel)]="newComment.contenu" name="contenu" placeholder="Votre commentaire..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Poster</button>
+  </form>
+
+  <div class="mt-4 m-3">
+    <h5>Commentaires:</h5>
+    <div *ngFor="let comment of comments" class="mt-2">
+      <p>Auteur: {{ comment?.auteur }}</p>
+      <p>Commentaire: {{ comment?.contenu }}</p>
+    </div>
+  </div>
 </div>

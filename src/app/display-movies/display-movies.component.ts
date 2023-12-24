@@ -42,6 +42,12 @@ export class DisplayMoviesComponent implements OnInit {
 
   }
 
+  onchange(searchTerm:String): void {
+
+    // @ts-ignore
+    this.searchMoviesDynamique(searchTerm);
+  }
+
   getMovies(): void {
     this.tmdbService.getAllMovies().subscribe(result => {
       if (Array.isArray(result.results)) {
@@ -74,7 +80,30 @@ export class DisplayMoviesComponent implements OnInit {
   }
 
 
-  protected readonly filter = filter;
+  // la recherche dynamique des filmes :
+
+  searchTerm: any;
+  searchMoviesDynamique(searchTerm: string): void {
+    if (!searchTerm) {
+      this.moviesSrch = this.movies;
+    } else {
+      this.tmdbService.searchMovies(searchTerm).subscribe(reponse => {
+        this.moviesSrch = reponse.results;
+
+        console.log(this.moviesSrch);
+      });
+    }
+  }
+
+
+
+
+
+
+
+
+  // protected readonly filter = filter;
+
 
   getFavorites() {
 
@@ -85,15 +114,16 @@ export class DisplayMoviesComponent implements OnInit {
   toggleFavorite(movie: Movie) {
     movie.favorite = !movie.favorite;
 
-    if (movie.favorite) {
+    /*if (movie.favorite) {
       this.moviesFav.push(movie);
     } else {
       const index = this.moviesFav.findIndex(m => m.id === movie.id);
       if (index > -1) {
         this.moviesFav.splice(index, 1);
       }
-    }
+    }*/
   }
+
 
 
 
