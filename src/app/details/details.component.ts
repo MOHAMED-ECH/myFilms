@@ -47,7 +47,7 @@ export class DetailsComponent implements OnInit{
          this.getComments();
         //  console.log("movie detailes :"+this.movieDetails);
           // Initialiser ici newComment
-          this.newComment = { contenu: '', auteur: '', filmId: this.movieDetails.id };
+          this.newComment = { contenu: '', auteur: '', reference: this.movieDetails.id };
 
         },
         error => {
@@ -82,6 +82,8 @@ export class DetailsComponent implements OnInit{
   comments: Commentaire[] = [];
 
   submitComment(): void {
+
+    this.newComment.reference = this.movieDetails.id;
     if (!this.newComment) {
       console.log("movie details id :",this.movieDetails.id)
     }
@@ -91,7 +93,7 @@ export class DetailsComponent implements OnInit{
       console.log("movie details id :",this.movieDetails.id)
       console.log("new comment :",this.newComment);
 
-      this.commentService.addComment(this.movieDetails.id, this.newComment).subscribe(
+      this.commentService.addComment(this.newComment).subscribe(
         (comment) => {
           console.log('Commentaire ajouté', comment);
         },
