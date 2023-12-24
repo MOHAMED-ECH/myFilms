@@ -8,6 +8,8 @@ import {FormControl, FormGroup, FormsModule} from "@angular/forms";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {Validators} from "@angular/forms";
 import {DetailsComponent} from "../details/details.component";
+import {FavorisService} from "../services/favoris.service";
+import {FilmAPI} from "../models/FilmAPI";
 
 
 @Component({
@@ -32,12 +34,15 @@ export class DisplayMoviesComponent implements OnInit {
   moviesSrch!: Movie[];
   moviesFav!: Movie[];
 
-  constructor(private tmdbService: TmdbService) {
+  constructor(private tmdbService: TmdbService,
+              private favorisService: FavorisService) {
   }
 
   ngOnInit(): void {
 
     this.getMovies();
+
+
 
 
   }
@@ -105,23 +110,72 @@ export class DisplayMoviesComponent implements OnInit {
   // protected readonly filter = filter;
 
 
-  getFavorites() {
+ /* getFavorites() {
+
+   // this.moviesSrch = this.movies.filter(movie => movie.favorite);
+
+   let aplaodedFilms!: FilmAPI[];
+
+    this.favorisService.getAllFav().subscribe(result => {
+      aplaodedFilms=result;
+      console.log("aplaodedFilms :",aplaodedFilms);
+
+    });
+
+    for (let mov of this.moviesSrch) {
+      for (let fav of aplaodedFilms) {
+        if (mov.id == fav.id) {
+          mov.favorite = true;
+        }
+      }
+    }
 
     this.moviesSrch = this.movies.filter(movie => movie.favorite);
 
+  }*/
+
+
+
+  getFavorites() {
+    this.favorisService.getAllFav().subscribe(aplaodedFilms => {
+      for (let mov of this.moviesSrch) {
+        for (let fav of aplaodedFilms) {
+          if (mov.id === fav.id) {
+            mov.favorite = true;
+          }
+        }
+      }
+
+      // Filter and update the moviesSrch array after the favorites have been identified
+      this.moviesSrch = this.movies.filter(movie => movie.favorite);
+
+      console.log("Updated favorites:", this.moviesSrch);
+    });
   }
 
   toggleFavorite(movie: Movie) {
     movie.favorite = !movie.favorite;
 
-    /*if (movie.favorite) {
-      this.moviesFav.push(movie);
+    let moviToAdd:  FilmAPI = {
+      id: movie.id,
+      titre: movie.title
+    };
+
+
+    if (movie.favorite) {
+
+      this.favorisService.addFav(moviToAdd).subscribe(result => {
+        console.log("movie added to favorites :", result);
+      });
     } else {
-      const index = this.moviesFav.findIndex(m => m.id === movie.id);
-      if (index > -1) {
-        this.moviesFav.splice(index, 1);
-      }
-    }*/
+      this.favorisService.deleteFav(movie.id).subscribe(result => {
+        console.log("movie deleted from favorites :", result);
+      });
+    }
+
+
+
+
   }
 
 
