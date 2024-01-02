@@ -18,12 +18,16 @@
 
   </form>
 
-  <button class="btn btn-secondary mx-1" (click)="getFavorites()">FAVORITES</button>
-  <button *ngIf="isAuthenticated" class="btn btn-secondary mx-1" (click)="onLogout()">Logout</button>
-  <button *ngIf="!isAuthenticated" class="btn btn-secondary mx-1" (click)="onLogin()">SingIn</button>
+  <div *ngIf="isAuthenticated">
+    <button class="btn btn-secondary mx-1" (click)="getFavorites()">FAVORITES</button>
+    <button class="btn btn-secondary mx-1" (click)="onLogout()">Logout</button>
+  </div>
 
-
+  <!-- Sign In button for non-authenticated users -->
+  <button *ngIf="!isAuthenticated" class="btn btn-secondary mx-1" (click)="onLogin()">SignIn</button>
 </nav>
+
+
 
 <div class="container mt-5 mx-5 ">
 
