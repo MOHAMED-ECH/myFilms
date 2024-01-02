@@ -1,18 +1,26 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import {DisplayMoviesComponent} from "./display-movies/display-movies.component";
+import {  RouterOutlet } from '@angular/router';
 
-import { HttpClientModule} from "@angular/common/http";
-
+import { UsersloginService } from './services/users.login.service';
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, DisplayMoviesComponent, HttpClientModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [RouterOutlet],
 })
 export class AppComponent {
 
+ 
 
+  constructor(
+    
+    private userLoginService: UsersloginService
+  ) {}
+  ngOnInit() {
+    this.userLoginService.autoLogin();
+    
+  }
+  
+  
 }

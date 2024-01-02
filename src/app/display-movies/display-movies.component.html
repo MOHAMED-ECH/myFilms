@@ -18,7 +18,10 @@
 
   </form>
 
-  <button class="btn btn-secondary me-3" (click)="getFavorites()">FAVORITES</button>
+  <button class="btn btn-secondary mx-1" (click)="getFavorites()">FAVORITES</button>
+  <button *ngIf="isAuthenticated" class="btn btn-secondary mx-1" (click)="onLogout()">Logout</button>
+  <button *ngIf="!isAuthenticated" class="btn btn-secondary mx-1" (click)="onLogin()">SingIn</button>
+
 
 </nav>
 

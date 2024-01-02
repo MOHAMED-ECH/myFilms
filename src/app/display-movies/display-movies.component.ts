@@ -1,5 +1,5 @@
 import {Component, Injectable, OnInit} from '@angular/core';
-import {DatePipe, NgForOf} from "@angular/common";
+import {CommonModule, DatePipe, NgForOf} from "@angular/common";
 import {filter, Observable} from "rxjs";
 import {TmdbService} from "../services/tmdb.service";
 import {Movie} from "../models/movie";
@@ -10,7 +10,9 @@ import {Validators} from "@angular/forms";
 import {DetailsComponent} from "../details/details.component";
 import {FavorisService} from "../services/favoris.service";
 import {FilmAPI} from "../models/FilmAPI";
-
+import {Subscription} from "rxjs";
+import {UsersloginService} from "../services/users.login.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-display-movies',
@@ -21,42 +23,49 @@ import {FilmAPI} from "../models/FilmAPI";
     HttpClientModule,
     FormsModule,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    CommonModule,
   ],
   templateUrl: './display-movies.component.html',
-  styleUrl: './display-movies.component.css'
+  styleUrl: './display-movies.component.css',
 })
-
 @Injectable()
 export class DisplayMoviesComponent implements OnInit {
-
   movies!: Movie[];
   moviesSrch!: Movie[];
   moviesFav!: Movie[];
+  isAuthenticated = false;
+  userSub: Subscription;
 
-  constructor(private tmdbService: TmdbService,
-              private favorisService: FavorisService) {
-  }
+  constructor(
+    private tmdbService: TmdbService,
+    private favorisService: FavorisService,
+    private userLoginService: UsersloginService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-
     this.getMovies();
-
-
-
-
-
-
+    this.userSub = this.userLoginService.userSubject.subscribe((user) => {
+      console.log('user', user);
+      this.isAuthenticated = !!user;
+    });
   }
 
-  onchange(searchTerm:String): void {
+  onLogout() {
+    this.userLoginService.logout();
+  }
+  onLogin() {
+    this.router.navigate(['/login']);
+  }
 
+  onchange(searchTerm: String): void {
     // @ts-ignore
     this.searchMoviesDynamique(searchTerm);
   }
 
   getMovies(): void {
-    this.tmdbService.getAllMovies().subscribe(result => {
+    this.tmdbService.getAllMovies().subscribe((result) => {
       if (Array.isArray(result.results)) {
         this.movies = result.results;
         this.moviesSrch = this.movies;
@@ -64,7 +73,7 @@ export class DisplayMoviesComponent implements OnInit {
         console.log(result);
       }
 
-      this.favorisService.getAllFav().subscribe(aplaodedFilms => {
+      this.favorisService.getAllFav().subscribe((aplaodedFilms) => {
         for (let mov of this.moviesSrch) {
           for (let fav of aplaodedFilms) {
             if (mov.id === fav.id) {
@@ -72,9 +81,8 @@ export class DisplayMoviesComponent implements OnInit {
             }
           }
         }
-        console.log("Updated favorites:", this.moviesSrch);
+        console.log('Updated favorites:', this.moviesSrch);
       });
-
     });
   }
 
@@ -82,21 +90,16 @@ export class DisplayMoviesComponent implements OnInit {
     return this.tmdbService.getimagefromapi(name);
   }
 
-
   searchMovies(searchTerm: string): void {
     if (!searchTerm) {
       this.moviesSrch = this.movies;
     } else {
-      this.tmdbService.searchMovies(searchTerm).subscribe(reponse => {
+      this.tmdbService.searchMovies(searchTerm).subscribe((reponse) => {
         this.moviesSrch = reponse.results;
         this.movies = this.moviesSrch;
       });
-
     }
-
-
   }
-
 
   // la recherche dynamique des filmes :
 
@@ -105,7 +108,7 @@ export class DisplayMoviesComponent implements OnInit {
     if (!searchTerm) {
       this.moviesSrch = this.movies;
     } else {
-      this.tmdbService.searchMovies(searchTerm).subscribe(reponse => {
+      this.tmdbService.searchMovies(searchTerm).subscribe((reponse) => {
         this.moviesSrch = reponse.results;
 
         console.log(this.moviesSrch);
@@ -113,17 +116,9 @@ export class DisplayMoviesComponent implements OnInit {
     }
   }
 
-
-
-
-
-
-
-
   // protected readonly filter = filter;
 
-
- /* getFavorites() {
+  /* getFavorites() {
 
    // this.moviesSrch = this.movies.filter(movie => movie.favorite);
 
@@ -147,10 +142,8 @@ export class DisplayMoviesComponent implements OnInit {
 
   }*/
 
-
-
   getFavorites() {
-    this.favorisService.getAllFav().subscribe(aplaodedFilms => {
+    this.favorisService.getAllFav().subscribe((aplaodedFilms) => {
       for (let mov of this.moviesSrch) {
         for (let fav of aplaodedFilms) {
           if (mov.id === fav.id) {
@@ -160,38 +153,28 @@ export class DisplayMoviesComponent implements OnInit {
       }
 
       // Filter and update the moviesSrch array after the favorites have been identified
-      this.moviesSrch = this.movies.filter(movie => movie.favorite);
+      this.moviesSrch = this.movies.filter((movie) => movie.favorite);
 
-      console.log("Updated favorites:", this.moviesSrch);
+      console.log('Updated favorites:', this.moviesSrch);
     });
   }
 
   toggleFavorite(movie: Movie) {
     movie.favorite = !movie.favorite;
 
-    let moviToAdd:  FilmAPI = {
+    let moviToAdd: FilmAPI = {
       id: movie.id,
-      titre: movie.title
+      titre: movie.title,
     };
 
-
     if (movie.favorite) {
-
-      this.favorisService.addFav(moviToAdd).subscribe(result => {
-        console.log("movie added to favorites :", result);
+      this.favorisService.addFav(moviToAdd).subscribe((result) => {
+        console.log('movie added to favorites :', result);
       });
     } else {
-      this.favorisService.deleteFav(movie.id).subscribe(result => {
-        console.log("movie deleted from favorites :", result);
+      this.favorisService.deleteFav(movie.id).subscribe((result) => {
+        console.log('movie deleted from favorites :', result);
       });
     }
-
-
-
-
   }
-
-
-
-
 }
