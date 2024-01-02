@@ -1,0 +1,58 @@
+<div class="login-container">
+  <app-alert
+    [message]="error"
+    *ngIf="error"
+    (close)="onHandleError()"
+  ></app-alert>
+  <div class="login-form">
+    <h1>Sign In</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Email"
+        class="form-control"
+      />
+      <div
+        class="error-message"
+        *ngIf="
+          loginForm.get('email').hasError('required') &&
+          loginForm.get('email').touched
+        "
+      >
+        Email is required.
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          loginForm.get('email').hasError('email') &&
+          loginForm.get('email').touched
+        "
+      >
+        Invalid email format.
+      </div>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+        class="form-control"
+      />
+      <div
+        class="error-message"
+        *ngIf="
+          loginForm.get('password').hasError('required') &&
+          loginForm.get('password').touched
+        "
+      >
+        Password is required.
+      </div>
+      <button type="submit" [disabled]="loginForm.invalid">Sign In</button>
+    </form>
+    <div class="alert alert-danger" *ngIf="authFailed">
+      Authentication failed
+    </div>
+    <p class="signup-link">
+      New to Netflix? <a [routerLink]="['/signup']">Sign up now</a>
+    </p>
+  </div>
+</div>
